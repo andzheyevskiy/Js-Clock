@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        div {
+            width: 50%;
+            aspect-ratio: 1;
+            border-radius: 50%;
+            position: absolute;
+
+            &.reloj {
+                background: url(./clock.png);
+                background-size: cover;
+            }
+
+            & div {
+                width: 100%;
+
+                &::before {
+                    content: "";
+                    display: block;
+                    background-color: black;
+                    position: relative;
+                }
+
+                &#horas::before {
+                    width: 3%;
+                    height: 25%;
+                    left: 48.5%;
+                    top: 25%;
+                }
+
+                &#minutos::before {
+                    width: 1%;
+                    height: 50%;
+                    left: 49.5%;
+                    top: 0%;
+                }
+
+                &#segundos::before {
+                    width: 0.5%;
+                    height: 50%;
+                    left: 49.75%;
+                    top: 0%;
+                }
+            }
+        }
+    </style>
+</head>
+
+<body onload="gestionarReloj()">
+
+    <div class="reloj">
+        <div id="horas"></div>
+        <div id="minutos"></div>
+        <div id="segundos"></div>
+    </div>
+
+    <script>
+        const reloj = {
+            horas: document.querySelector("#horas"),
+            minutos: document.querySelector("#minutos"),
+            segundos: document.querySelector("#segundos")
+        }
+
+        function actualizar() {
+            const ahora = new Date().toLocaleString().split(" ")[1]
+            const [hora, minutos, segundos] = ahora.split(":")
+            const segundosDeg = (Number(segundos) / 60) * 360
+            const minutosDeg = (Number(minutos) / 60) * 360 + (Number(segundos) / 60) * 6
+            const horaDeg = (Number(hora) / 12) * 360 + (Number(minutos) / 60) * 30
+
+            reloj.segundos.style.transform = `rotate(${segundosDeg}deg)`
+            reloj.minutos.style.transform = `rotate(${minutosDeg}deg)`
+            reloj.horas.style.transform = `rotate(${horaDeg}deg)`
+        }
+
+        function gestionarReloj() {
+            actualizar()
+            setInterval(actualizar, 1000)
+        }
+
+    </script>
+
+</body>
+
+</html>
